@@ -15,7 +15,7 @@ namespace DevExpressStudy
 {
     public partial class EmployeeModify : Form
     {
-        readonly string connectionString = @"Data Source=DESKTOP-80CKK65;Initial Catalog=Project001;Integrated Security=True";
+        readonly string connectionString = @"Data Source=[서버이름];Initial Catalog=[DB이름];Integrated Security=True";
         public EmployeeModify(DataRow employeeData)
         {
             InitializeComponent();
@@ -105,24 +105,13 @@ namespace DevExpressStudy
                 {
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
-                    // SqlDataReader : ADO.NET에서 제공하는 클래스.
-                    // DB로부터 데이터를 읽어오는데 사용한다. DB에서 데이터를 읽어오는데 효율적이며, 데이터를 한 번에 읽어올 수 있다. 연결된 데이터 소스에서 데이터를 순차적으로 읽어오면서, 읽은 데이터를 바로 처리할 수 있도록 해준다.
-                    // ExecuteReader : SqlCommand 객체를 사용하여 DB에서 데이터를 읽어오는 메서드. SELECT 쿼리를 실행하고 그 결과를 가져오는데 사용한다.
-                    // 쿼리를 실행하고 DB에서 데이터를 가져오며, 가져온 데이터에 대한 읽기 전용 스트림을 제공. 이 스트림을 통해 데이터를 읽으면서 DB연결이 계속 유지된다.
 
                     while (reader.Read())
                     {
                         string departmentCode = reader["부서코드"].ToString();
                         CodeCombo.Items.Add(departmentCode);
                     }
-                    // reader.Read() 메서드는 다음행으로 이동하며, 해당 행에 데이터가 있을 경우 true를 반환. 
-                    // while 루프는 DB에서 한 행씩 데이터를 읽어오면서 반복된다.
-                    // 각 행에서 SqlDataReader를 사용해서 데이터를 읽을 때는 열의 이름이나 인덱스를 통해 해당 열의 값을 가져올 수 있다. 
-                    // 가져온 부서 코드 값을 CodeCombe에 추가한다.
-                    // Items.Add() 메서드를 사용해서 추가한다.
-                    // Items.Add() : .NETFramework의 컨트롤에서 사용되는 메서드.
-                    // 주로 ComboBox나 ListBox와 같은 컨트롤에서 아이템을 추가하거나 목록을 만들 때 사용된다. 
-
+                    
                     reader.Close();
                 }
                 catch (Exception ex)
@@ -175,8 +164,6 @@ namespace DevExpressStudy
             try
             {
                 var addr = new System.Net.Mail.MailAddress(email);
-                // var : C#의 키워드 중 하나로, 변수를 선언할 때 사용한다. 컴파일러가 변수의 데이터 형식을 추론하여 할당된 값을 기반으로 결정하도록 한다.
-                // System.Net.Mail.MailAddress  = .NET Framework에서 제공하는 클래스 중 하나로, 이메일 주소를 나타내고 관리하는 데 사용한다.
                 return addr.Address == email;
             }
             catch
@@ -199,7 +186,7 @@ namespace DevExpressStudy
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string path = "C:\\study";
+                    string path = "C:\\저장할 경로\\";
                     string fileName = Path.GetFileName(imagePath);
                     string filePath = Path.Combine(path, fileName);
 
