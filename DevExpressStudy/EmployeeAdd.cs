@@ -29,7 +29,7 @@ namespace DevExpressStudy
             CloseBtn.Click += Close;
         }
 
-        string connectionString = @"Data Source=DESKTOP-80CKK65;Initial Catalog=Project001;Integrated Security=True";
+        string connectionString = @"Data Source=[서버이름];Initial Catalog=[DB이름];Integrated Security=True";
 
 
 
@@ -196,7 +196,7 @@ namespace DevExpressStudy
 
             try
             {
-                string destinationPath = "C:\\study";
+                string destinationPath = "C:\\저장할 경로\\";
                 string fileName = Path.GetFileName(imagePath);
                 string destinationFilePath = Path.Combine(destinationPath, fileName);
 
