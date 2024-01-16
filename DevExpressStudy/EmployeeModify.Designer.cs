@@ -54,8 +54,10 @@ namespace DevExpressStudy
             this.MemoText = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Title = new System.Windows.Forms.Label();
+            this.pictureEdit2 = new DevExpress.XtraEditors.PictureEdit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // CloseBtn
@@ -110,6 +112,7 @@ namespace DevExpressStudy
             this.tableLayoutPanel1.Controls.Add(this.MessengerText, 2, 7);
             this.tableLayoutPanel1.Controls.Add(this.label11, 0, 8);
             this.tableLayoutPanel1.Controls.Add(this.MemoText, 0, 9);
+            this.tableLayoutPanel1.Controls.Add(this.pictureEdit2, 2, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 41);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 10;
@@ -123,6 +126,11 @@ namespace DevExpressStudy
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(702, 425);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
@@ -334,6 +342,16 @@ namespace DevExpressStudy
             this.Title.Text = "사원 수정";
             this.Title.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
+            // pictureEdit2
+            // 
+            this.pictureEdit2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pictureEdit2.Location = new System.Drawing.Point(508, 3);
+            this.pictureEdit2.Name = "pictureEdit2";
+            this.pictureEdit2.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.tableLayoutPanel1.SetRowSpan(this.pictureEdit2, 5);
+            this.pictureEdit2.Size = new System.Drawing.Size(154, 169);
+            this.pictureEdit2.TabIndex = 4;
+            // 
             // EmployeeModify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
@@ -353,6 +371,7 @@ namespace DevExpressStudy
             this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -384,5 +403,6 @@ namespace DevExpressStudy
         private System.Windows.Forms.TextBox MemoText;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label Title;
+        private DevExpress.XtraEditors.PictureEdit pictureEdit2;
     }
 }

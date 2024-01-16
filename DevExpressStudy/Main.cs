@@ -1,4 +1,6 @@
-﻿using DevExpress.XtraGrid;
+﻿using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
 using System;
 using System.Collections.Generic;
@@ -19,11 +21,11 @@ namespace DevExpressStudy
         {
             InitializeComponent();
             addBtn.Click += EmployeeAdd;
-
+            modifyBtn.Click += EmployeeModify;
 
             CloseBtn.Click += Close;
 
-            
+
             this.Load += MainLoad;
         }
 
@@ -68,6 +70,31 @@ namespace DevExpressStudy
                     MessageBox.Show("연결 실패: " + ex.Message);
                 }
             }
+            SetReadOnlyGridView();
+        }
+
+        
+        private void SetReadOnlyGridView()
+        {
+            GridView gridView = EmployeeTable.MainView as GridView;
+
+            if (gridView != null)
+            {
+                foreach (GridColumn column in gridView.Columns)
+                {
+                    // 각 열에 대한 읽기 전용 설정
+                    column.OptionsColumn.ReadOnly = true;
+
+                    // 각 열에 대한 RepositoryItem 수정
+                    RepositoryItemTextEdit repositoryItem = column.ColumnEdit as RepositoryItemTextEdit;
+                    if (repositoryItem != null)
+                    {
+                        repositoryItem.ReadOnly = true;
+                        repositoryItem.Appearance.Options.UseTextOptions = true;
+                        repositoryItem.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near; // 필요에 따라 정렬 방식도 설정
+                    }
+                }
+            }
         }
 
         private void EmployeeAdd(object sender, EventArgs e)
@@ -76,10 +103,20 @@ namespace DevExpressStudy
             nAdd.Show();
         }
 
-        /*private void Modify(object sender, EventArgs e)
+        private void EmployeeModify(object sender, EventArgs e)
         {
+            int selectCell = (EmployeeTable.FocusedView as GridView).FocusedRowHandle;
+            Console.WriteLine(selectCell);
+            if (selectCell >= 0)
+            {
+                DataRow selectedRow = (EmployeeTable.FocusedView as GridView).GetDataRow(selectCell);
+                Console.WriteLine(selectedRow);
 
-        }*/
+                // 선택된 행의 데이터를 EmployeeInfo 폼으로 전달
+                EmployeeModify eModify = new EmployeeModify(selectedRow);
+                eModify.ShowDialog();
+            }
+        }
 
         private void Close(object sender, EventArgs e)
         {

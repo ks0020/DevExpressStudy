@@ -39,7 +39,7 @@ namespace DevExpressStudy
             this.label7 = new System.Windows.Forms.Label();
             this.addBtn = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.modify = new System.Windows.Forms.Label();
+            this.modifyBtn = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.Title = new System.Windows.Forms.Label();
@@ -51,8 +51,10 @@ namespace DevExpressStudy
             // 
             // EmployeeTable
             // 
+            this.EmployeeTable.EmbeddedNavigator.Appearance.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EmployeeTable.EmbeddedNavigator.Appearance.Options.UseFont = true;
             this.EmployeeTable.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.EmployeeTable.Location = new System.Drawing.Point(-1, 36);
+            this.EmployeeTable.Location = new System.Drawing.Point(13, 44);
             this.EmployeeTable.MainView = this.gridView1;
             this.EmployeeTable.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.EmployeeTable.Name = "EmployeeTable";
@@ -96,7 +98,7 @@ namespace DevExpressStudy
             this.tableLayoutPanel1.Controls.Add(this.label7, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.addBtn, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label6, 5, 0);
-            this.tableLayoutPanel1.Controls.Add(this.modify, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.modifyBtn, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.label5, 4, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(965, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -171,16 +173,16 @@ namespace DevExpressStudy
             this.label6.TabIndex = 1;
             this.label6.Text = "삭제";
             // 
-            // modify
+            // modifyBtn
             // 
-            this.modify.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.modify.AutoSize = true;
-            this.modify.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.modify.Location = new System.Drawing.Point(147, 5);
-            this.modify.Name = "modify";
-            this.modify.Size = new System.Drawing.Size(42, 21);
-            this.modify.TabIndex = 1;
-            this.modify.Text = "수정";
+            this.modifyBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.modifyBtn.AutoSize = true;
+            this.modifyBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.modifyBtn.Location = new System.Drawing.Point(147, 5);
+            this.modifyBtn.Name = "modifyBtn";
+            this.modifyBtn.Size = new System.Drawing.Size(42, 21);
+            this.modifyBtn.TabIndex = 1;
+            this.modifyBtn.Text = "수정";
             // 
             // label5
             // 
@@ -247,7 +249,7 @@ namespace DevExpressStudy
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label addBtn;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label modify;
+        private System.Windows.Forms.Label modifyBtn;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label Title;

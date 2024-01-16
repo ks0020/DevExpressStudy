@@ -31,53 +31,7 @@ namespace DevExpressStudy
 
         string connectionString = @"Data Source=DESKTOP-80CKK65;Initial Catalog=Project001;Integrated Security=True";
 
-        private void PictureEdit_Click(object sender, EventArgs e)
-        {
-            // 파일 선택 다이얼로그를 통해 이미지 로드
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image Files (*.jpg; *.jpeg; *.png; *.gif)|*.jpg; *.jpeg; *.png; *.gif";
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string imagePath = openFileDialog.FileName;
-
-                // 선택한 이미지 파일을 PictureEdit 컨트롤에 로드
-                (sender as PictureEdit).Image = Image.FromFile(imagePath);
-
-                // 여기에서 선택한 이미지를 업로드하는 로직을 추가
-                UploadImage(imagePath);
-            }
-        }
-
-        private void UploadImage(string imagePath)
-        {
-            try
-            {
-                // 이미지를 PC에 저장 (원하는 폴더로 변경 필요)
-                string destinationPath = "C:\\study";
-                string fileName = Path.GetFileName(imagePath);
-                string destinationFilePath = Path.Combine(destinationPath, fileName);
-
-                File.Copy(imagePath, destinationFilePath, true);
-
-                // 데이터베이스에 이미지의 경로 저장
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string query = "INSERT INTO dbo.ImageTable (ImageName, ImageRoute) VALUES (@ImageName, @ImageRoute)";
-                    SqlCommand command = new SqlCommand(query, connection);
-
-                    command.Parameters.AddWithValue("@ImageName", fileName); // ImageName에 이미지 파일의 이름을 설정합니다.
-                    command.Parameters.AddWithValue("@ImageRoute", destinationFilePath); // ImageRoute에 이미지 파일의 경로를 설정합니다.
-
-                    int rowsAffected = command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("에러발생: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
         // 콤보 박스 부서코드 적용
         private void BindDepartmentCodes()
@@ -188,6 +142,23 @@ namespace DevExpressStudy
                 return sBuilder.ToString();
             }
         }
+
+        private string imagePath;
+        private void PictureEdit_Click(object sender, EventArgs e)
+        {
+            // 파일 선택 다이얼로그를 통해 이미지 로드
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files (*.jpg; *.jpeg; *.png; *.gif)|*.jpg; *.jpeg; *.png; *.gif";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                imagePath = openFileDialog.FileName;
+
+                // 선택한 이미지 파일을 PictureEdit 컨트롤에 로드
+                (sender as PictureEdit).Image = Image.FromFile(imagePath);
+            }
+        }
+
         // 저장하기
         public void Add(object sender, EventArgs e)
         {
@@ -197,16 +168,15 @@ namespace DevExpressStudy
                 MessageBox.Show("필수 정보를 입력 해주세요..", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             // 이메일 주소형식 확인
             // 단, 이메일은 필수가 아니므로 비어있다면 그냥 지나친다.
-            if (EmailText.Text != "")
+            if (!string.IsNullOrEmpty(EmailText.Text) && !EmailCheck(EmailText.Text))
             {
-                if (string.IsNullOrEmpty(EmailText.Text) || !EmailCheck(EmailText.Text))
-                {
-                    MessageBox.Show("올바른 이메일 주소 형식이 아닙니다.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                MessageBox.Show("올바른 이메일 주소 형식이 아닙니다.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
             // 비밀번호 해싱
             string hashedPassword = HashPassword(UserPasswordText.Text);
 
@@ -224,14 +194,32 @@ namespace DevExpressStudy
                 return;
             }
 
-            // 저장하기
             try
             {
+                string destinationPath = "C:\\study";
+                string fileName = Path.GetFileName(imagePath);
+                string destinationFilePath = Path.Combine(destinationPath, fileName);
+
+                File.Copy(imagePath, destinationFilePath, true);
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "INSERT INTO dbo.employee (부서코드, 부서명, 사원코드, 사원명, 로그인ID, 비밀번호, 직위, 고용형태, 휴대전화, 이메일, 메신저ID, 메모) VALUES (@DepartmentCode, @DepartmentName, @EmployeeCode, @EmployeeName, @UserId, @Password, @Position, @Type, @Contact, @Email, @MessengerId, @Memo)";
+
+                    // 이미지 업로드 및 이미지 테이블, 직원 정보 테이블에 추가
+                    string query = @"
+                INSERT INTO dbo.ImageTable (ImageName, ImageRoute, EmployeeCode) 
+                VALUES (@ImageName, @ImageRoute, @ECode);
+
+                INSERT INTO dbo.employee (부서코드, 부서명, 사원코드, 사원명, 로그인ID, 비밀번호, 직위, 고용형태, 휴대전화, 이메일, 메신저ID, 메모) 
+                VALUES (@DepartmentCode, @DepartmentName, @EmployeeCode, @EmployeeName, @UserId, @Password, @Position, @Type, @Contact, @Email, @MessengerId, @Memo);
+            ";
+
                     SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@ImageName", Path.GetFileName(imagePath)); // ImageName에 이미지 파일의 이름을 설정합니다.
+                    command.Parameters.AddWithValue("@ImageRoute", imagePath); // ImageRoute에 이미지 파일의 경로를 설정합니다.
+                    command.Parameters.AddWithValue("@ECode", EmployeeCodeText.Text); // EmployeeCode에 직원 코드를 설정합니다.
+
+                    // 나머지 직원 정보 파라미터 추가
                     command.Parameters.AddWithValue("@DepartmentCode", CodeCombo.Text);
                     command.Parameters.AddWithValue("@DepartmentName", DepartmentNameText.Text);
                     command.Parameters.AddWithValue("@EmployeeCode", EmployeeCodeText.Text);
@@ -243,7 +231,7 @@ namespace DevExpressStudy
                     command.Parameters.AddWithValue("@Contact", ContactText.Text);
                     command.Parameters.AddWithValue("@Email", EmailText.Text);
                     command.Parameters.AddWithValue("@MessengerId", MessengerText.Text);
-                    command.Parameters.AddWithValue("@MeMo", MemoText.Text);
+                    command.Parameters.AddWithValue("@Memo", MemoText.Text);
 
                     int rowsAffected = command.ExecuteNonQuery();
 
