@@ -196,23 +196,32 @@ namespace DevExpressStudy
 
             try
             {
-                string destinationPath = "C:\\저장할 경로\\";
-                string fileName = Path.GetFileName(imagePath);
-                string destinationFilePath = Path.Combine(destinationPath, fileName);
-
-                File.Copy(imagePath, destinationFilePath, true);
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
+                    if(imagePath == null)
+                    {
+                        Console.WriteLine("PASS");
+                    }
+                    else
+                    {
+                        string path = "C:\\study";
+                        string fileName = Path.GetFileName(imagePath);
+                        string filePath = Path.Combine(path, fileName);
+                        File.Copy(imagePath, filePath, true);
+                        
+                        // 이미지 업로드 및 이미지 테이블에 추가
+                        string imageQuery = @"INSERT INTO dob.ImageTable (ImageName, ImageRoute, EmployeeCode) VELUES (@ImageName, @ImageRoute, @ECode);";
+                        SqlCommand imageCommand = new SqlCommand(imageQuery, connection);
+                        imageCommand.Parameters.AddWithValue("@ImageName", Path.GetFileName(imagePath)); // ImageName에 이미지 파일의 이름을 설정합니다.
+                        imageCommand.Parameters.AddWithValue("@ImageRoute", imagePath); // ImageRoute에 이미지 파일의 경로를 설정합니다.
+                        imageCommand.Parameters.AddWithValue("@ECode", EmployeeCodeText.Text); // EmployeeCode에 직원 코드를 설정합니다.
 
-                    // 이미지 업로드 및 이미지 테이블, 직원 정보 테이블에 추가
-                    string query = @"
-                INSERT INTO dbo.ImageTable (ImageName, ImageRoute, EmployeeCode) 
-                VALUES (@ImageName, @ImageRoute, @ECode);
-
-                INSERT INTO dbo.employee (부서코드, 부서명, 사원코드, 사원명, 로그인ID, 비밀번호, 직위, 고용형태, 휴대전화, 이메일, 메신저ID, 메모) 
-                VALUES (@DepartmentCode, @DepartmentName, @EmployeeCode, @EmployeeName, @UserId, @Password, @Position, @Type, @Contact, @Email, @MessengerId, @Memo);
-            ";
+                    }
+                    
+                    //직원 정보 테이블에 추가
+                    string query = @"INSERT INTO dbo.employee (부서코드, 부서명, 사원코드, 사원명, 로그인ID, 비밀번호, 직위, 고용형태, 휴대전화, 이메일, 메신저ID, 메모) 
+                VALUES (@DepartmentCode, @DepartmentName, @EmployeeCode, @EmployeeName, @UserId, @Password, @Position, @Type, @Contact, @Email, @MessengerId, @Memo);";
 
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@ImageName", Path.GetFileName(imagePath)); // ImageName에 이미지 파일의 이름을 설정합니다.
