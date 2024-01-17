@@ -205,7 +205,7 @@ namespace DevExpressStudy
                     }
                     else
                     {
-                        string path = "C:\\study";
+                        string path = "C:\\저장할 경로";
                         string fileName = Path.GetFileName(imagePath);
                         string filePath = Path.Combine(path, fileName);
                         File.Copy(imagePath, filePath, true);
